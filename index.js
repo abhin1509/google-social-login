@@ -1,11 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
-require("./passport/passport");
+const passportConfig = require("./passport/passport");
+const passport = require("passport");
 const auth = require("./routes/auth");
 const app = express();
 
 // connect to db
 mongoose.connect("", () => console.log("DB connected!"));
+
+app.use(passport.initialize());
 
 app.set("view engine", "ejs");
 app.use("/auth", auth);

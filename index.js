@@ -27,10 +27,21 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// req.user is present if we get a successful callback from google
+// use this to check whether the user is logged in or not
+// middleware
+const isLoggedIn = (req, res, next) => {
+  if (!req.user) {
+    res.redirect("/auth/login");
+  }
+  // if logged in just continue
+  next();
+};
+
 app.set("view engine", "ejs");
 app.use("/auth", auth);
 
-app.get("/", (req, res) => {
+app.get("/", isLoggedIn, (req, res) => {
   res.render("home");
 });
 
